@@ -1,0 +1,8 @@
+{
+  "name": "@dominikfoldi/sample-package",
+  "version": "1.0.0",
+  "main": "lib/sample-package.js",
+  "files": [
+    "lib"
+  ]
+}

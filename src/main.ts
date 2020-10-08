@@ -1,41 +1,29 @@
-import * as core from '@actions/core'
-import * as github from '@actions/github'
 import lint from '@commitlint/lint'
 import load from '@commitlint/load'
 
 async function run(): Promise<void> {
+  console.log('DEBUG: 1')
   try {
-    const configPath = core.getInput('configuration-path', {required: true})
-    const title = getPrTitle()
-    if (!title) {
-      core.debug('Could not get pull request title from context, exiting')
-      return
-    }
+    console.log('DEBUG: 1')
+    const configPath = './commitlint.config.js'
+    console.log(`DEBUG: 2:${configPath}`)
+    const title = 'build: example'
+    console.log(`DEBUG: 3 ${title}`)
+    console.log(`DEBUG: 4`)
     await lintPullRequest(title, configPath)
   } catch (error) {
-    core.error(error)
-    core.setFailed(error.message)
+    console.log(error)
   }
-}
-
-function getPrTitle(): string | undefined {
-  const pullRequest = github.context.payload.pull_request
-  if (!pullRequest) {
-    return undefined
-  }
-
-  return pullRequest.title
 }
 
 export async function lintPullRequest(title: string, configPath: string) {
+  var configTest = require('../commitlint.config.js')
+  console.log(`TEST CONFIG: ${JSON.stringify(configTest)}`)
   const opts = await load({}, {file: configPath, cwd: process.cwd()})
 
-  const result = await lint(
-    title,
-    opts.rules,
-    opts.parserPreset ? {parserOpts: opts.parserPreset.parserOpts} : {}
-  )
-  if (result.valid === true) return
+  console.log(`TEST: ${JSON.stringify(opts)}`)
+  const result = await lint(title, opts.rules, opts)
+  if (result.valid) return
 
   const errorMessage = result.errors
     .map(({message, name}: any) => `${name}:${message}`)

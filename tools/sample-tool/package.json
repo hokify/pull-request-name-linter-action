@@ -1,0 +1,8 @@
+{
+  "name": "@dominikfoldi/sample-tool",
+  "version": "1.0.0",
+  "main": "lib/sample-tool.js",
+  "files": [
+    "lib"
+  ]
+}

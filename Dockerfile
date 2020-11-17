@@ -1,13 +1,11 @@
-FROM node:15-alpine
+FROM node:14-alpine
 
 RUN apk --no-cache add git
 
-WORKDIR /app
-
-COPY package*.json ./
+COPY package*.json /
 
 RUN npm ci --production
 
 COPY . .
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
